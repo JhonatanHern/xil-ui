@@ -1,4 +1,5 @@
 import React, { Component } from "react"
+import classNames from "classnames"
 
 class DragAndDrop extends Component {
   state = {
@@ -50,40 +51,16 @@ class DragAndDrop extends Component {
     div.removeEventListener("drop", this.handleDrop)
   }
   render() {
+    var liClasses = classNames({
+      "drag-and-drop": true,
+      active: this.state.drag,
+    })
     return (
       <div
-        className="drag-and-drop"
+        className={liClasses}
         style={{ display: "inline-block", position: "relative" }}
         ref={this.dropRef}
       >
-        {this.state.dragging && (
-          <div
-            style={{
-              border: "dashed grey 4px",
-              backgroundColor: "rgba(255,255,255,.8)",
-              position: "absolute",
-              top: 0,
-              bottom: 0,
-              left: 0,
-              right: 0,
-              zIndex: 9999,
-            }}
-          >
-            <div
-              style={{
-                position: "absolute",
-                top: "50%",
-                right: 0,
-                left: 0,
-                textAlign: "center",
-                color: "grey",
-                fontSize: 36,
-              }}
-            >
-              <div>drop here :)</div>
-            </div>
-          </div>
-        )}
         {this.props.children}
       </div>
     )

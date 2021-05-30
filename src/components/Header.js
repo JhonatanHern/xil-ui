@@ -16,7 +16,7 @@ export default function Header() {
             <Link to="/home">Home</Link>
           </Nav.Item>
           <Nav.Item className="mr-4">
-            <Link to="/batch" eventKey="dashboard">
+            <Link to="/batch" eventkey="dashboard">
               Batch Transfer
             </Link>
           </Nav.Item>

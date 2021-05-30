@@ -9,7 +9,7 @@ import WalletConnectProvider from "@walletconnect/web3-provider"
 import Torus from "@toruslabs/torus-embed"
 import Authereum from "authereum"
 
-import { ERC20_ABI, DAI_ADDRESS } from "./constants"
+import { BEP20_WITH_BATCH_ABI, addressesByNetwork } from "./constants"
 
 import notify from "../utils/notify"
 
@@ -57,11 +57,18 @@ export const Web3Provider = ({ children }) => {
 
   const setProtocol = async (accounts) => {
     setAccount(accounts[0])
-
+    console.log("net:", state.networkId)
     // Contract Instances
-    window.token = new web3.eth.Contract(ERC20_ABI, DAI_ADDRESS, {
-      from: accounts[0],
-    })
+    const networkId = await web3.givenProvider.networkVersion
+    setNetworkId(networkId)
+
+    window.token = new web3.eth.Contract(
+      BEP20_WITH_BATCH_ABI,
+      addressesByNetwork[Number(networkId)],
+      {
+        from: accounts[0],
+      }
+    )
     setContracts({
       token: window.token,
     })
@@ -111,7 +118,7 @@ export const Web3Provider = ({ children }) => {
 
     try {
       const web3Modal = new Web3Modal({
-        network: "mainnet", // optional
+        // network: "mainnet", // optional
         cacheProvider: true, // optional
         providerOptions, // required
         theme: "light",
@@ -125,14 +132,6 @@ export const Web3Provider = ({ children }) => {
       const _accounts = await web3.eth.getAccounts()
       await setProtocol(_accounts)
       console.log("Connected Account: ", _accounts[0])
-
-      const networkId = await web3.givenProvider.networkVersion
-      setNetworkId(networkId)
-      if (Number(networkId) !== 1) {
-        alert("Please connect to etherum mainnet network")
-        history.push("/")
-        return
-      }
 
       notify("success", "connected web3 wallet", 1500)
 
@@ -154,10 +153,10 @@ export const Web3Provider = ({ children }) => {
 
   const getBalances = async () => {
     try {
-      const balanceDAI = await contracts.token.methods.balanceOf(account).call()
+      const balanceXIL = await contracts.token.methods.balanceOf(account).call()
       const balanceETH = await web3.eth.getBalance(account)
 
-      return { ETH: fromWei(balanceETH), DAI: fromWei(balanceDAI) }
+      return { ETH: fromWei(balanceETH), XIL: fromWei(balanceXIL) }
     } catch (error) {
       notify("error", error.message)
       console.log(error.message)

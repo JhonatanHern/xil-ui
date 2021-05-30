@@ -18,6 +18,10 @@ header {
   align-items: center;
   border-bottom: 1px solid #ddd;
 }
+main {
+  height: 90vh;
+  overflow: auto;
+}
 header > div {
   display: flex;
   align-items: center;
@@ -25,7 +29,8 @@ header > div {
 header h5 {
   margin-bottom: 0;
 }
-header button {
+header button,
+.batch-components button {
   margin-left: 1em;
   margin-right: 1em;
   background-color: transparent;
@@ -140,8 +145,33 @@ header button {
 }
 
 .drag-and-drop {
-  border: 3px dashed blue;
+  border: 3px dashed #68f;
   padding: 3em;
   margin: 2em;
   min-width: 50vw;
+  position: relative;
+  border-radius: 1em;
+}
+.drag-and-drop.active {
+  background-color: #ddd;
+}
+.drag-and-drop img {
+  width: 15%;
+}
+.batch-components {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+.batch-components table {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+  border-collapse: collapse;
+  border: 1px solid #ccc;
+  max-width: 80%;
+  margin-left: 10%;
+}
+.batch-components td,
+.batch-components th {
+  border: 1px solid #ccc;
 }

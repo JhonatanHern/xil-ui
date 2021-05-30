@@ -24,7 +24,7 @@ export default function App() {
     <>
       <Router history={history}>
         <Header />
-        {routes}
+        <main>{routes}</main>
       </Router>
     </>
   )

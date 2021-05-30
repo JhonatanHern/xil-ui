@@ -1,30 +1,36 @@
-import React, { useContext } from "react";
-import { Container, Jumbotron, Image } from "react-bootstrap";
+import React, { useContext, useState, useEffect } from "react"
 
-import { Web3Context } from "../web3";
+import { Web3Context } from "../web3"
+
+const statuses = {
+  DEFAULT: "default",
+  TRANSACT: "transact",
+}
 
 export default function Home() {
-  const { account } = useContext(Web3Context);
+  const {
+    getBalances,
+    contracts: { token },
+  } = useContext(Web3Context)
+  const { account } = useContext(Web3Context)
+  const [status, setStatus] = useState(statuses.DEFAULT)
 
+  const [balances, setBalances] = useState({})
+
+  useEffect(async () => {
+    if (token) {
+      setBalances(await getBalances())
+    } else {
+      setBalances({})
+    }
+  }, [token])
+  console.log(balances)
   return (
-    <div className="app-container h-100">
-      <Jumbotron className="home-page mt-5">
-        <Container className="text-center">
-          <h1>React Dapp Starter Kit</h1>
-          {!account && (
-            <p>
-              <h4 className="mt-5 text-secondary">
-                Let's start by connecting to a web3 provider!
-              </h4>
-            </p>
-          )}
-        </Container>
-      </Jumbotron>
-      <Image
-        style={{ maxWidth: "700px" }}
-        src="https://miro.medium.com/max/1024/1*JMkw9e9X4FbuJu_V5wn4fg.png"
-        fluid
-      />
+    <div className="home">
+      My Balance:
+      {balances && (typeof balances.XIL === "number" ? balances.XIL : "Loading...")}
+      {status === statuses.DEFAULT && <></>}
+      {status === statuses.TRANSACT && <></>}
     </div>
-  );
+  )
 }
