@@ -40,22 +40,24 @@ export default function Dashboard() {
     <div className="app-container batch-components">
       {fileUploaded ? (
         <>
-          <table>
-            <thead>
-              <tr>
-                <th>Address</th>
-                <th>Amount</th>
-              </tr>
-            </thead>
-            <tbody>
-              {fileUploaded.map((row, i) => (
+          <div className="table-container">
+            <table>
+              <thead>
                 <tr>
-                  <td>{row[0]}</td>
-                  <td>{row[1]}</td>
+                  <th>Address</th>
+                  <th>Amount</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {fileUploaded.map((row, i) => (
+                  <tr key={i}>
+                    <td>{row[0]}</td>
+                    <td>{row[1]}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
           <div>
             <button>Make Batch Transfer</button>
           </div>

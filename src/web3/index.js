@@ -61,17 +61,22 @@ export const Web3Provider = ({ children }) => {
     // Contract Instances
     const networkId = await web3.givenProvider.networkVersion
     setNetworkId(networkId)
-
-    window.token = new web3.eth.Contract(
-      BEP20_WITH_BATCH_ABI,
-      addressesByNetwork[Number(networkId)],
-      {
-        from: accounts[0],
-      }
-    )
-    setContracts({
-      token: window.token,
-    })
+    if (addressesByNetwork[Number(networkId)]) {
+      window.token = new web3.eth.Contract(
+        BEP20_WITH_BATCH_ABI,
+        addressesByNetwork[Number(networkId)],
+        {
+          from: accounts[0],
+        }
+      )
+      setContracts({
+        token: window.token,
+      })
+    } else {
+      alert(
+        "Please connect to etherum mainnet network or to the Binance smart chain. The app won't work otherwise."
+      )
+    }
   }
 
   // === HELPERS === //
@@ -141,7 +146,7 @@ export const Web3Provider = ({ children }) => {
 
       //If accounts change
       window.ethereum.on("accountsChanged", (accounts) => {
-        setProtocol(accounts)
+        document.location.reload()
       })
     } catch (error) {
       notify("error", "Could not connect to web3!")
@@ -154,12 +159,23 @@ export const Web3Provider = ({ children }) => {
   const getBalances = async () => {
     try {
       const balanceXIL = await contracts.token.methods.balanceOf(account).call()
-      const balanceETH = await web3.eth.getBalance(account)
 
-      return { ETH: fromWei(balanceETH), XIL: fromWei(balanceXIL) }
+      return { rawXIL: new Web3.utils.BN(balanceXIL), XIL: fromWei(balanceXIL) }
     } catch (error) {
       notify("error", error.message)
       console.log(error.message)
+    }
+  }
+
+  const performTransaction = async (recipient, amount) => {
+    try {
+      await contracts.token.methods.transfer(recipient, amount).send({ from: account.address })
+      return
+    } catch (error) {
+      alert(
+        "Something has ocurred with your transaction, check that you have enough gas to execute it."
+      )
+      return error
     }
   }
 
@@ -178,6 +194,7 @@ export const Web3Provider = ({ children }) => {
         fromWei,
         toBN,
         getBalances,
+        performTransaction,
       }}
     >
       {children}

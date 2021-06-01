@@ -12,14 +12,18 @@ export default function Header() {
       <div>
         <Image style={{ maxHeight: "60px" }} id="logo-image" src="xil.png" alt="eth-logo" />
         <Nav activeKey="/home">
-          <Nav.Item className="mr-4">
-            <Link to="/home">Home</Link>
-          </Nav.Item>
-          <Nav.Item className="mr-4">
-            <Link to="/batch" eventkey="dashboard">
-              Batch Transfer
-            </Link>
-          </Nav.Item>
+          {account && (
+            <>
+              <Nav.Item className="mr-4">
+                <Link to="/home">Home</Link>
+              </Nav.Item>
+              <Nav.Item className="mr-4">
+                <Link to="/batch" eventkey="dashboard">
+                  Batch Transfer
+                </Link>
+              </Nav.Item>
+            </>
+          )}
         </Nav>
       </div>
       <div>

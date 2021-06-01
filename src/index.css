@@ -29,8 +29,7 @@ header > div {
 header h5 {
   margin-bottom: 0;
 }
-header button,
-.batch-components button {
+button {
   margin-left: 1em;
   margin-right: 1em;
   background-color: transparent;
@@ -162,16 +161,50 @@ header button,
   display: flex;
   flex-direction: column;
   text-align: center;
+  padding-bottom: 5em;
 }
 .batch-components table {
-  margin-top: 1.5em;
-  margin-bottom: 1.5em;
   border-collapse: collapse;
   border: 1px solid #ccc;
+  width: 100%;
+}
+.batch-components .table-container {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
   max-width: 80%;
+  position: relative;
   margin-left: 10%;
+  max-height: 70vh;
+  overflow-y: auto;
 }
 .batch-components td,
 .batch-components th {
   border: 1px solid #ccc;
+}
+
+.home {
+  width: 60%;
+  min-height: 20vh;
+  margin-left: 20%;
+  padding: 3em;
+  margin-top: 4em;
+  border: 1px solid #ccc;
+  position: relative;
+  text-align: center;
+}
+
+.home h2 {
+  text-align: center;
+  margin-bottom: 1em;
+}
+.home button {
+  font-size: larger;
+}
+.home div div {
+  margin-bottom: 1em;
+}
+.home input {
+  border: 1px solid #aaa;
+  outline: none;
+  background-color: transparent;
 }
