@@ -30,19 +30,24 @@ export default function Home() {
     performTransaction,
   } = useContext(Web3Context)
   const [status, setStatus] = useState(statuses.DEFAULT)
+  const [loading, setLoading] = useState(false)
+
   const [address, setAddress] = useState("")
   const [amount, setAmount] = useState("")
-  const [loading, setLoading] = useState(false)
 
   const [balances, setBalances] = useState({})
 
-  useEffect(async () => {
+  const loadBalance = async () => {
+    console.log("getting data")
     if (token) {
       setBalances(await getBalances())
     } else {
       setBalances({})
     }
-  })
+  }
+
+  useEffect(loadBalance, [status, loading, token])
+  useEffect(loadBalance, [])
 
   const sendTransaction = async () => {
     // validate amount
@@ -78,7 +83,6 @@ export default function Home() {
       </div>
     )
   }
-  console.log(balances)
   return (
     <div className="home">
       <h2>{balances && (typeof balances.XIL === "number" ? balances.XIL : "Loading...")} XIL</h2>

@@ -178,6 +178,16 @@ export const Web3Provider = ({ children }) => {
       return error
     }
   }
+  const batchTransfer = async (data) => {
+    try {
+      let res = await contracts.token.methods.batchTransfer(data).send({ from: account.address })
+      console.log(res)
+      return "success"
+    } catch (error) {
+      console.log(error)
+      return "error"
+    }
+  }
 
   // Connect web3 on app load
   useEffect(() => {
@@ -195,6 +205,7 @@ export const Web3Provider = ({ children }) => {
         toBN,
         getBalances,
         performTransaction,
+        batchTransfer,
       }}
     >
       {children}
