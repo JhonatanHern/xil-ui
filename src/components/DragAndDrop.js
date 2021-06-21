@@ -36,6 +36,12 @@ class DragAndDrop extends Component {
       this.dragCounter = 0
     }
   }
+  handleFileUploadViaClick = (e) => {
+    let files = e.target.files
+    if (files && files.length) {
+      this.props.handleDrop(files)
+    }
+  }
   componentDidMount() {
     let div = this.dropRef.current
     div.addEventListener("dragenter", this.handleDragIn)
@@ -61,7 +67,16 @@ class DragAndDrop extends Component {
         style={{ display: "inline-block", position: "relative" }}
         ref={this.dropRef}
       >
-        {this.props.children}
+        <img src="upload.svg" alt="" />
+        <h2>
+          Drop CVS file here <label for="file-input">or click here</label>
+        </h2>
+        <input
+          type="file"
+          id="file-input"
+          onChange={this.handleFileUploadViaClick}
+          style={{ display: "none" }}
+        />
       </div>
     )
   }

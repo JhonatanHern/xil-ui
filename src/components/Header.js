@@ -1,35 +1,44 @@
-import React, { useContext } from "react"
+import React, { useContext, useState } from "react"
 import { Link } from "react-router-dom"
-import { Row, Button, Nav, Image } from "react-bootstrap"
+import { Image } from "react-bootstrap"
 
 import { Web3Context } from "../web3"
 
 export default function Header() {
   const { connectWeb3, account, logout } = useContext(Web3Context)
+  const [activeMenu, setActiveMenu] = useState(false)
+
+  const navItems = (
+    <>
+      <div>
+        <Link to="/home" onClick={() => setActiveMenu(false)}>
+          Home
+        </Link>
+      </div>{" "}
+      <div className="mr-4">
+        <Link to="/batch" onClick={() => setActiveMenu(false)}>
+          Batch Transfer
+        </Link>
+      </div>
+    </>
+  )
 
   return (
     <header>
       <div>
-        <Image style={{ maxHeight: "60px" }} id="logo-image" src="xil.png" alt="eth-logo" />
-        <Nav activeKey="/home">
-          {account && (
-            <>
-              <Nav.Item className="mr-4">
-                <Link to="/home">Home</Link>
-              </Nav.Item>
-              <Nav.Item className="mr-4">
-                <Link to="/batch" eventkey="dashboard">
-                  Batch Transfer
-                </Link>
-              </Nav.Item>
-            </>
-          )}
-        </Nav>
+        <Image
+          onClick={() => setActiveMenu(!activeMenu)}
+          style={{ marginLeft: "1em", marginRight: "1em" }}
+          id="logo-image"
+          src="xil.svg"
+          alt="eth-logo"
+        />
+        {account && <div className="desktop desktop-links">{navItems}</div>}
       </div>
       <div>
         {account ? (
           <>
-            <div sm="8" className="align-self-center">
+            <div sm="8" className="align-self-center desktop">
               <h5 className="text-right">
                 Connected:{" "}
                 <a
@@ -38,7 +47,7 @@ export default function Header() {
                   rel="noreferrer"
                   className="account-link"
                 >
-                  {account.substring(0, 4) + "..." + account.substring(38, 42)}
+                  {account && account.substring(0, 5) + "..." + account.substring(39, 42)}
                 </a>
               </h5>
             </div>
@@ -51,6 +60,20 @@ export default function Header() {
           <button onClick={connectWeb3}>Connect Wallet</button>
         )}
       </div>
+      <section className={"mobile floating-menu" + (activeMenu ? " active" : "")}>
+        {navItems}
+        <div>
+          Connected:{" "}
+          <a
+            href={`https://etherscan.io/address/${account}`}
+            target="_blank"
+            rel="noreferrer"
+            className="account-link"
+          >
+            {account && account.substring(0, 5) + "..." + account.substring(39, 42)}
+          </a>
+        </div>
+      </section>
     </header>
   )
 }

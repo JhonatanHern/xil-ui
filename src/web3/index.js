@@ -1,4 +1,4 @@
-import React, { useState, useReducer, useEffect, useCallback, createContext } from "react"
+import React, { useReducer, useEffect, useCallback, createContext } from "react"
 
 import { Web3Reducer } from "./reducer"
 

@@ -46,8 +46,8 @@ export default function Home() {
     }
   }
 
-  useEffect(loadBalance, [status, loading, token])
-  useEffect(loadBalance, [])
+  useEffect(() => loadBalance(), [status, loading, token])
+  useEffect(() => loadBalance(), [])
 
   const sendTransaction = async () => {
     // validate amount
@@ -83,9 +83,17 @@ export default function Home() {
       </div>
     )
   }
+  console.log(typeof balances.XIL === "number")
+  console.log(balances)
   return (
     <div className="home">
-      <h2>{balances && (typeof balances.XIL === "number" ? balances.XIL : "Loading...")} XIL</h2>
+      <h2>
+        {balances &&
+          (typeof balances.XIL === "number"
+            ? balances.XIL.toLocaleString("en-US", { maximumFractionDigits: 6 })
+            : "Loading...")}{" "}
+        XIL
+      </h2>
       {status === statuses.DEFAULT && (
         <button onClick={() => setStatus(statuses.TRANSACT)}>Send</button>
       )}

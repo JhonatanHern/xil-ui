@@ -5,7 +5,6 @@ import DragAndDrop from "./DragAndDrop"
 import { Web3Context } from "../web3"
 
 const BN = Web3.utils.BN
-const toWei = Web3.utils.toWei
 
 const validCharactersForAmount = "0123456789".split("")
 
@@ -20,6 +19,24 @@ const isValidAmount = (amount) => {
 
 const err = (msg) => {
   return { error: msg }
+}
+
+const downloadText = `address, amount
+0x0A70beF8c6993E61391FCdd1fE3a6fD7bcfCa008, 9213121200000000000000
+0xFF71812dE2dff0e58843c48Acc5cC8F14282D529, 9883121200000000000000
+`
+
+const downloadExample = () => {
+  const element = document.createElement("a")
+  element.setAttribute("href", "data:text/plain;charset=utf-8," + encodeURIComponent(downloadText))
+  element.setAttribute("download", "example.csv")
+
+  element.style.display = "none"
+  document.body.appendChild(element)
+
+  element.click()
+
+  document.body.removeChild(element)
 }
 
 export default function Dashboard() {
@@ -42,8 +59,8 @@ export default function Dashboard() {
       setBalances({})
     }
   }
-  useEffect(loadBalance, [loading, uploadedFile, token])
-  useEffect(loadBalance, [])
+  useEffect(() => loadBalance(), [loading, uploadedFile, token])
+  useEffect(() => loadBalance(), [])
   const isRowValid = (row) => {
     const address = row[0]
     const amount = row[1]
@@ -177,10 +194,12 @@ export default function Dashboard() {
           </div>
         </>
       ) : (
-        <DragAndDrop handleDrop={handleUpload}>
-          <img src="upload.svg" />
-          <h2>Drop CVS file here</h2>
-        </DragAndDrop>
+        <>
+          <DragAndDrop handleDrop={handleUpload} />
+          <h4 onClick={downloadExample} style={{ cursor: "pointer" }}>
+            Click here to see an example of how your CSV file should look like
+          </h4>
+        </>
       )}
     </div>
   )
